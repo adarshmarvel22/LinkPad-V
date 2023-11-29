@@ -1,0 +1,22 @@
+<!-- profiles/templates/profiles/homepage.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
+<body>
+
+<h2>Welcome to the LinkPad</h2>
+
+<p>This is a simple homepage. You can customize it further based on your project's design and content.</p>
+
+<p>Explore the profiles:
+    <a href="{% url 'profiles:signup' %}">Sign Up</a>,
+    <a href="{% url 'profiles:login' %}">Log In</a>,
+
+</p>
+
+</body>
+</html>

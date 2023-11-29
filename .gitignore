@@ -1,0 +1,39 @@
+# .gitignore
+
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore media files
+media/
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore local development settings
+local_settings.py
+
+# Ignore virtual environment
+venv/
+.env
+
+# Ignore staticfiles directory (if using 'collectstatic')
+staticfiles/
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore migration files
+**/migrations/
+
+# Ignore secret keys and sensitive information
+*.secret
+*.key
+*.pem
+*.env
+
+# Ignore logs
+logs/
+*.log
