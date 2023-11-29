@@ -31,7 +31,8 @@ def signup(request):
             Student.objects.create(user_profile=UserProfile.objects.create(user=user, bio=""), current_year=current_year, major=major)
             print("2")
             messages.success(request, f'Account created for {username}!')
-            return redirect('student_dashboard', username=username)
+            return redirect('profiles:student_dashboard', username=username)
+            # return render(request, 'profiles/student_dashboard.html')
     else:
         form = CustomUserCreationForm()
     return render(request, 'profiles/signup.html', {'form': form})
@@ -42,16 +43,22 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
             
             # Redirect to the appropriate dashboard based on the user's role
-            if hasattr(user, 'student'):
-                return redirect('student_dashboard', username=username)
-            elif hasattr(user, 'departmentstaff'):
-                return redirect('department_staff_dashboard', username=username)
-            elif hasattr(user, 'alumni'):
-                return redirect('alumni_dashboard', username=username)
+            if hasattr(user, 'userprofile'):
+                user_profile = user.userprofile
+
+                if hasattr(user_profile, 'student'):
+                    return redirect('profiles:student_dashboard', username=username)
+                elif hasattr(user_profile, 'departmentstaff'):
+                    return redirect('profiles:department_staff_dashboard', username=username)
+                elif hasattr(user_profile, 'alumni'):
+                    return redirect('profiles:alumni_dashboard', username=username)
+            else:
+                messages.error(request, 'Invalid user profile.')
         else:
             messages.error(request, 'Invalid username or password.')
 
