@@ -1,0 +1,20 @@
+<!-- profiles/templates/profiles/assign_alumni.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Alumni</title>
+</head>
+<body>
+
+<h2>Assign Alumni Status for {{ user_profile.user.username }}</h2>
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{ alumni_form.as_p }}
+    <button type="submit">Assign as Alumni</button>
+</form>
+
+</body>
+</html>

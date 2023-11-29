@@ -10,3 +10,21 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = UserCreationForm.Meta.fields + ('current_year', 'major')
+
+# profiles/UpdateStudentForm.py
+from .models import Student, Alumni, DepartmentStaff
+
+class UpdateStudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['current_year', 'major']
+
+class AssignAlumniForm(forms.ModelForm):
+    class Meta:
+        model = Alumni
+        fields = ['graduation_year', 'major']
+
+class AssignStaffForm(forms.ModelForm):
+    class Meta:
+        model = DepartmentStaff
+        fields = ['department', 'position']

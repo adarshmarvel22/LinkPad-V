@@ -1,0 +1,52 @@
+<!-- profiles/templates/profiles/department_staff_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Staff Dashboard</title>
+</head>
+<body>
+
+<h2>Welcome to the Department Staff Dashboard, {{ department_staff.user_profile.user.username }}!</h2>
+<!-- View Student Details -->
+<h3>Student Details</h3>
+<ul>
+    {% for student in students %}
+        <li>
+            {{ student.user_profile.user.username }} - 
+            Current Year: {{ student.current_year }}, Major: {{ student.major }}
+            <a href="{% url 'profiles:update_student' student.user_profile.user.username %}">Update</a>
+            <a href="{% url 'profiles:assign_alumni' student.user_profile.user.username %}">Assign as Alumni</a>
+            <a href="{% url 'profiles:assign_staff' student.user_profile.user.username %}">Assign as Staff</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- View Staff Details -->
+<h3>Staff Members</h3>
+<ul>
+    {% for staff_member in staff_members %}
+        <li>
+            {{ staff_member.user_profile.user.username }} - 
+            Department: {{ staff_member.department }}, Position: {{ staff_member.position }}
+            <a href="{% url 'profiles:delete_staff' staff_member.user_profile.user.username %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- View Alumni Details -->
+<h3>Alumni Members</h3>
+<ul>
+    {% for alumni_member in alumni_members %}
+        <li>
+            {{ alumni_member.user_profile.user.username }} - 
+            Graduation Year: {{ alumni_member.graduation_year }}, Major: {{ alumni_member.major }}
+            <a href="{% url 'profiles:delete_alumni' alumni_member.user_profile.user.username %}">Delete</a>
+            <a href="{% url 'profiles:revert_to_student' alumni_member.user_profile.user.username %}">Revert to Student</a>
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
