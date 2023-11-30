@@ -1,0 +1,21 @@
+<!-- messaging/templates/messaging/send_message.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message</title>
+</head>
+<body>
+
+<h2>Send Message to {{ target_username }}</h2>
+
+<form method="post" action="{% url 'messaging:send_message' target_username=target_username %}">
+    {% csrf_token %}
+    <label for="content">Message:</label>
+    <textarea name="content" required></textarea>
+    <button type="submit">Send Message</button>
+</form>
+
+</body>
+</html>

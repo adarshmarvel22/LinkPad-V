@@ -8,6 +8,17 @@
 </head>
 <body>
 
+    <!-- Links to Other Pages -->
+<p><a href="{% url 'profiles:homepage' %}">Homepage</a></p>
+<p><a href="{% url 'messaging:messages' %}">Messages</a></p>
+<!-- base.html or other template -->
+<nav>
+    <!-- other navigation links -->
+    {% if user.is_authenticated %}
+        <a href="{% url 'profiles:logout' %}">Logout</a>
+    {% endif %}
+</nav>
+
 <h2>Welcome to the Department Staff Dashboard, {{ department_staff.user_profile.user.username }}!</h2>
 <!-- View Student Details -->
 <h3>Student Details</h3>

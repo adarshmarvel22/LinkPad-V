@@ -18,4 +18,6 @@ urlpatterns = [
     path('delete_staff/<str:username>/', views.delete_staff, name='delete_staff'),
     path('delete_alumni/<str:username>/', views.delete_alumni, name='delete_alumni'),
     path('revert_to_student/<str:username>/', views.revert_to_student, name='revert_to_student'),
+
+    path('logout/', views.logout_view, name='logout'),
 ]

@@ -1,12 +1,11 @@
 # profiles/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import UserProfile, DepartmentStaff, Alumni, Student
-
 
 def homepage(request):
     return render(request, 'profiles/homepage.html')
@@ -16,9 +15,21 @@ from .forms import CustomUserCreationForm
 # ... other imports ...
 
 def signup(request):
+    if request.user.is_authenticated:
+        # If the user is already authenticated, redirect to their respective dashboard
+        user_profile = request.user.userprofile
+
+        if hasattr(user_profile, 'student'):
+            return redirect('profiles:student_dashboard', username=request.user.username)
+        elif hasattr(user_profile, 'departmentstaff'):
+            return redirect('profiles:department_staff_dashboard', username=request.user.username)
+        elif hasattr(user_profile, 'alumni'):
+            return redirect('profiles:alumni_dashboard', username=request.user.username)
+
+    user = None  # Declare the user variable outside the if block
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        print("0")
+        
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
@@ -26,10 +37,13 @@ def signup(request):
             # Extract additional fields
             current_year = form.cleaned_data.get('current_year')
             major = form.cleaned_data.get('major')
-            print("1")
+            
             # Create Student profile
             Student.objects.create(user_profile=UserProfile.objects.create(user=user, bio=""), current_year=current_year, major=major)
-            print("2")
+            
+            # Log the user in
+            login(request, user)
+
             messages.success(request, f'Account created for {username}!')
             return redirect('profiles:student_dashboard', username=username)
     else:
@@ -38,6 +52,17 @@ def signup(request):
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        # If the user is already authenticated, redirect to their respective dashboard
+        user_profile = request.user.userprofile
+
+        if hasattr(user_profile, 'student'):
+            return redirect('profiles:student_dashboard', username=request.user.username)
+        elif hasattr(user_profile, 'departmentstaff'):
+            return redirect('profiles:department_staff_dashboard', username=request.user.username)
+        elif hasattr(user_profile, 'alumni'):
+            return redirect('profiles:alumni_dashboard', username=request.user.username)
+        
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -62,6 +87,10 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
 
     return render(request, 'profiles/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('profiles:homepage')  # Redirect to your desired page after logout
 
 @login_required
 def student_dashboard(request, username):
@@ -145,6 +174,7 @@ def assign_staff(request, username):
     return render(request, 'profiles/assign_staff.html', {'staff_form': staff_form, 'user_profile': user_profile, 'student_profile': student_profile})
 
 # profiles/eeletes
+from django.db import IntegrityError
 
 @login_required
 def delete_staff(request, username):
@@ -163,3 +193,32 @@ def delete_alumni(request, username):
 @login_required
 def revert_to_student(request, username):
     alumni_member = get_object_or_404(Alumni, user_profile__user__username=username)
+
+    # Extract alumni details
+    graduation_year = alumni_member.graduation_year
+    major = alumni_member.major
+
+    # Check if a UserProfile already exists for the user
+    existing_user_profile = UserProfile.objects.filter(user=alumni_member.user_profile.user).first()
+
+    if existing_user_profile:
+        # If UserProfile already exists, update it
+        existing_user_profile.bio = ""  # Update with your logic
+        existing_user_profile.save()
+    else:
+        # If UserProfile doesn't exist, create a new one
+        try:
+            student_profile = Student.objects.create(
+                user_profile=UserProfile.objects.create(user=alumni_member.user_profile.user, bio=""),
+                current_year=graduation_year + 1,  # You may adjust this logic based on your requirements
+                major=major
+            )
+        except IntegrityError:
+            # Handle IntegrityError if necessary
+            messages.error(request, 'Error reverting to student. Please try again.')
+
+    # Delete the Alumni profile
+    alumni_member.delete()
+
+    messages.success(request, f'{username} has been reverted to a Student!')
+    return redirect('profiles:department_staff_dashboard', username=request.user.username)
