@@ -15,8 +15,9 @@
 <p>Explore the profiles:
     
     {% if user.is_authenticated %}
-        <a href="{% url 'profiles:logout' %}">Logout</a>
         <a href="{% url 'profiles:login' %}">Profile</a>,
+        <a href="{% url 'messaging:messages' %}">Messages</a>,
+        <a href="{% url 'profiles:logout' %}">Logout</a>
     {% else %}
         <a href="{% url 'profiles:signup' %}">Sign Up</a>,
         <a href="{% url 'profiles:login' %}">Log In</a>,
