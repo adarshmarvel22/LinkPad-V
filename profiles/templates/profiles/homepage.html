@@ -10,12 +10,27 @@
 
 <h2>Welcome to the LinkPad</h2>
 
-<p>This is a simple homepage. You can customize it further based on your project's design and content.</p>
+<p>This is the LinkPad homepage and Module 1 is complete. Frontend Design, module 2, 3 and 5 are in progress.</p>
 
 <p>Explore the profiles:
-    <a href="{% url 'profiles:signup' %}">Sign Up</a>,
-    <a href="{% url 'profiles:login' %}">Log In</a>,
+    
+    {% if user.is_authenticated %}
+        <a href="{% url 'profiles:logout' %}">Logout</a>
+        <a href="{% url 'profiles:login' %}">Profile</a>,
+    {% else %}
+        <a href="{% url 'profiles:signup' %}">Sign Up</a>,
+        <a href="{% url 'profiles:login' %}">Log In</a>,
+    {% endif %}
+</p>
 
+<!-- Add links to other views/templates as needed -->
+<p>Explore other features:
+    <a href="{% url 'profiles:clubs' %}">Clubs</a>,
+    <a href="{% url 'profiles:notices' %}">Notices</a>,
+    <a href="{% url 'profiles:events' %}">Events</a>,
+    <a href="{% url 'profiles:alumni_stories' %}">Alumni Stories</a>,
+    <a href="{% url 'profiles:internship_jobs' %}">Internship and Jobs</a>,
+    <a href="{% url 'profiles:discussion_forums' %}">Discussion Forums</a>
 </p>
 
 </body>

@@ -20,4 +20,11 @@ urlpatterns = [
     path('revert_to_student/<str:username>/', views.revert_to_student, name='revert_to_student'),
 
     path('logout/', views.logout_view, name='logout'),
+
+    path('clubs/', views.clubs, name='clubs'),
+    path('notices/', views.notices, name='notices'),
+    path('events/', views.events, name='events'),
+    path('alumni_stories/', views.alumni_stories, name='alumni_stories'),
+    path('internship_jobs/', views.internship_jobs, name='internship_jobs'),
+    path('discussion_forums/', views.discussion_forums, name='discussion_forums'),
 ]

@@ -222,3 +222,33 @@ def revert_to_student(request, username):
 
     messages.success(request, f'{username} has been reverted to a Student!')
     return redirect('profiles:department_staff_dashboard', username=request.user.username)
+
+@login_required
+def clubs(request):
+    # Your logic for the clubs view
+    return render(request, 'profiles/clubs.html')
+
+@login_required
+def notices(request):
+    # Your logic for the notices view
+    return render(request, 'profiles/notices.html')
+
+@login_required
+def events(request):
+    # Your logic for the events view
+    return render(request, 'profiles/events.html')
+
+@login_required
+def alumni_stories(request):
+    # Your logic for the alumni stories view
+    return render(request, 'profiles/alumni_stories.html')
+
+@login_required
+def internship_jobs(request):
+    # Your logic for the internship and jobs view
+    return render(request, 'profiles/internship_jobs.html')
+
+@login_required
+def discussion_forums(request):
+    # Your logic for the discussion forums view
+    return render(request, 'profiles/discussion_forums.html')
