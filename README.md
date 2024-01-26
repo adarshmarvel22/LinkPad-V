@@ -20,7 +20,8 @@ LinkPad also has a feature that explains the model's predictions and generates c
 
 ## Technical Terms
 
-* Django: A Python web framework
+* Django: A Python web framework for backend
+* ReactJS: A javascript framework for frontend
 * NLP: Natural language processing
 * Bi-directional RNN: A type of recurrent neural network that can process data in both directions
 * Accuracy: A measure of how often a model correctly predicts the outcome of a given input
